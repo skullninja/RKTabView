@@ -43,11 +43,11 @@
     NSUInteger selectedIndex = [self.tabItems indexOfObjectPassingTest:^BOOL(RKTabItem *obj, NSUInteger idx, BOOL *stop) {
         return obj.tabState == TabStateEnabled;
     }];
-  
+    
     if (selectedIndex == NSNotFound) {
         return nil;
     }
-  
+    
     RKTabItem *selectedItem = [self.tabItems objectAtIndex:selectedIndex];
     return selectedItem;
 }
@@ -169,6 +169,12 @@
                     }
                 }
                 //Call delegate method.
+                if (self.delegate) {
+                    if ([self delegateRespondsToEnableSelector] && notify) {
+                        [self.delegate tabView:self tabBecameEnabledAtIndex:[self indexOfTab:tabItem] tab:tabItem];
+                    }
+                }
+            } else {
                 if (self.delegate) {
                     if ([self delegateRespondsToEnableSelector] && notify) {
                         [self.delegate tabView:self tabBecameEnabledAtIndex:[self indexOfTab:tabItem] tab:tabItem];
